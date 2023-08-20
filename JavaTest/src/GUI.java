@@ -9,9 +9,7 @@ public class GUI implements ActionListener {
     JLabel label;
     JFrame frame;
     JPanel panel;
-    JButton button2;
-    JButton button;
-    JButton button3;
+    JButton button, button2, button3;
 
     public GUI(){
         frame = new JFrame();
@@ -41,7 +39,7 @@ public class GUI implements ActionListener {
 
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
-        //panel.setLayout(new GridLayout(0,1));
+        panel.setLayout(new GridLayout(0,1));
         panel.add(button);
         panel.add(button2);
         panel.add(button3);
@@ -51,7 +49,7 @@ public class GUI implements ActionListener {
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("GUI");
-        //frame.pack();
+        frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setSize(600, 400);
@@ -71,6 +69,7 @@ public class GUI implements ActionListener {
                 count = 0;
             }
         } else if (e.getSource() == button2) {
+            new DisemvowelGUI();
             System.out.print("Pressed");
         }
     }
