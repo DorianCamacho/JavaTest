@@ -7,8 +7,9 @@ public class Test implements ActionListener {
     final static String BUTTONPANEL = "Click Counter";
     final static String TEXTPANEL = "Disemvowel";
     final static int extraWindowWidth = 100;
-    JButton button1;
-    JLabel label, label2;
+    private static JButton button1, button2;
+    private static JLabel label, label2, label3;
+    private static JTextField tf, textOutput;
     int count = 0;
 
     public void addComponentToPane(Container pane) {
@@ -27,7 +28,12 @@ public class Test implements ActionListener {
         button1.setBackground(Color.WHITE);
         button1.addActionListener(this);
 
-        label = new JLabel("OK Count: 0");
+        button2 = new JButton("Enter");
+        button2.setPreferredSize(new Dimension(80, 30));
+        button2.setBackground(Color.WHITE);
+        button2.addActionListener(this);
+
+        label = new JLabel("Click Count: 0");
         label.setForeground(Color.WHITE);
         label.setLayout(new GridLayout(2,1));
 
@@ -41,12 +47,21 @@ public class Test implements ActionListener {
         label2.setForeground(Color.WHITE);
         //label2.setLayout(new GridLayout(1,1));
 
-        JTextField tf = new JTextField();
-        tf.setBounds(90,90,200,25);
+        tf = new JTextField(20);
+        //tf.setBounds(90,90,200,25);
+
+        label3 = new JLabel("Output:");
+        label3.setForeground(Color.white);
+
+        textOutput = new JTextField("",20);
+        textOutput.setEditable(false);
 
         JPanel card2 = new JPanel();
         card2.add(label2);
         card2.add(tf);
+        card2.add(button2);
+        card2.add(label3);
+        card2.add(textOutput);
         card2.setBackground(Color.decode("#252525"));
         card2.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
 
@@ -56,7 +71,6 @@ public class Test implements ActionListener {
         pane.add(tabbedPane, BorderLayout.CENTER);
     }
     private static void createAndShowGUI() {
-        //Create and set up the window.
         JFrame frame = new JFrame("JavaTest");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -75,10 +89,16 @@ public class Test implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button1) {
             count++;
-            label.setText("OK Count: " + count);
+            label.setText("Click Count: " + count);
             if (count >= 10) {
                 count = 0;
             }
+        } else if (e.getSource() == button2) {
+            System.out.println("Pressed");
+            String text = tf.getText();
+            String textOut = text.replaceAll("[aeiouAEIOU]", "");
+            textOutput.setText(textOut);
+            System.out.println(textOut);
         }
     }
 }
