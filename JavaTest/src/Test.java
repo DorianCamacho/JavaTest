@@ -8,9 +8,9 @@ public class Test implements ActionListener {
     final static String TEXTPANEL = "Disemvowel";
     final static int extraWindowWidth = 100;
     private static JButton button1, button2;
-    private static JLabel label, label2, label3;
+    private static JLabel label, label2, label3, label4;
     private static JTextField tf, textOutput;
-    int count = 0;
+    int count = 0, tenthsCount = 0;
 
     public void addComponentToPane(Container pane) {
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -37,11 +37,16 @@ public class Test implements ActionListener {
         label.setForeground(Color.WHITE);
         label.setLayout(new GridLayout(2,1));
 
+        label4 = new JLabel();
+        label4.setForeground(Color.white);
+        label4.setLayout(new GridLayout(3,1));
+
         card1.setBackground(Color.decode("#252525"));
         card1.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
-        card1.setLayout(new GridLayout(2,1));
+        card1.setLayout(new GridLayout(3,1));
         card1.add(button1);
         card1.add(label);
+        card1.add(label4);
 
         label2 = new JLabel("Enter a string");
         label2.setForeground(Color.WHITE);
@@ -91,6 +96,8 @@ public class Test implements ActionListener {
             count++;
             label.setText("Click Count: " + count);
             if (count >= 10) {
+                tenthsCount++;
+                label4.setText("Tenths: "+tenthsCount);
                 count = 0;
             }
         } else if (e.getSource() == button2) {
