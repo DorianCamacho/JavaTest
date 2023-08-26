@@ -6,11 +6,14 @@ import javax.swing.*;
 public class Test implements ActionListener {
     final static String BUTTONPANEL = "Click Counter";
     final static String TEXTPANEL = "Disemvowel";
+    final static String STOPWATCH = "Stopwatch";
     final static int extraWindowWidth = 100;
-    private static JButton button1, button2;
-    private static JLabel label, label2, label3, label4;
+    private static JButton button1, button2, startButton, stopButton;
+    private static JLabel label, label2, label3, label4, timeLabel;
     private static JTextField tf, textOutput;
     int count = 0, tenthsCount = 0;
+    private long startTime;
+    private Timer timer;
 
     public void addComponentToPane(Container pane) {
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -70,12 +73,53 @@ public class Test implements ActionListener {
         card2.setBackground(Color.decode("#252525"));
         card2.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
 
+        timeLabel = new JLabel("00:00:00");
+        timeLabel.setForeground(Color.white);
+        timeLabel.setFont(new Font("Verdana", Font.PLAIN, 48));
+
+        stopButton = new JButton("Stop");
+        stopButton.setPreferredSize(new Dimension(80, 30));
+        stopButton.setBackground(Color.WHITE);
+        stopButton.addActionListener(this);
+
+        startButton = new JButton("Start");
+        startButton.setPreferredSize(new Dimension(80, 30));
+        startButton.setBackground(Color.WHITE);
+        startButton.addActionListener(this);
+
+        JPanel card3 = new JPanel();
+        card3.add(timeLabel);
+        card3.add(startButton);
+        card3.add(stopButton);
+        card3.setBackground(Color.decode("#252525"));
+        card3.setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
+
         tabbedPane.addTab(BUTTONPANEL, card1);
         tabbedPane.addTab(TEXTPANEL, card2);
+        tabbedPane.addTab(STOPWATCH, card3);
 
         pane.add(tabbedPane, BorderLayout.CENTER);
+
+        timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                updateElapsedTime(elapsedTime);
+            }
+        });
     }
-    private static void createAndShowGUI() {
+    private void updateElapsedTime(long elapsedTime) {
+        long seconds = elapsedTime / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        seconds %= 60;
+        minutes %= 60;
+        hours %= 24;
+
+        String timeText = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        timeLabel.setText(timeText);
+    }
+    private static void ShowGUI() {
         JFrame frame = new JFrame("JavaTest");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -88,7 +132,7 @@ public class Test implements ActionListener {
         frame.setSize(300, 300);
     }
     public static void main(String[] args) {
-        createAndShowGUI();
+        ShowGUI();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -101,11 +145,20 @@ public class Test implements ActionListener {
                 count = 0;
             }
         } else if (e.getSource() == button2) {
-            System.out.println("Pressed");
             String text = tf.getText();
             String textOut = text.replaceAll("[aeiouAEIOU]", "");
             textOutput.setText(textOut);
-            System.out.println(textOut);
+        } else if (e.getSource() == startButton) {
+            System.out.println("Start");
+            startButton.setEnabled(false);
+            stopButton.setEnabled(true);
+            startTime = System.currentTimeMillis();
+            timer.start();
+        } else if (e.getSource() == stopButton) {
+            System.out.println("Stop");
+            startButton.setEnabled(true);
+            stopButton.setEnabled(false);
+            timer.stop();
         }
     }
 }
